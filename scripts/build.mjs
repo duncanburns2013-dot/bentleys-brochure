@@ -90,7 +90,10 @@ body.is-flip {
   align-items: center;
   justify-content: center;
 }
-#scaler { transform-origin: center center; }
+/* Must not shrink: it is a flex item, and letting it collapse to the
+   available width breaks the page aspect ratio before the transform is even
+   applied. The transform does the fitting, not the flex layout. */
+#scaler { flex: 0 0 auto; transform-origin: center center; }
 #book .page { box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42); }
 .flip-nav {
   position: fixed;
