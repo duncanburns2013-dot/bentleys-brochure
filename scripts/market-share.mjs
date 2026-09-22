@@ -20,7 +20,7 @@ function parseCsv(text) {
     .filter((l) => l && !l.startsWith("#"));
 
   const head = lines.shift().split(",");
-  const years = head.slice(2);
+  const years = head.slice(4);
 
   const unquote = (s) => s.replace(/^"(.*)"$/, "$1").trim();
 
@@ -29,7 +29,9 @@ function parseCsv(text) {
     return {
       name: cells[0],
       mergeInto: cells[1] || null,
-      values: cells.slice(2).map((c) => {
+      color: cells[2] || null,
+      feature: cells[3] === "1",
+      values: cells.slice(4).map((c) => {
         const n = Number(c);
         if (Number.isNaN(n)) throw new Error(`non-numeric share for ${cells[0]}: "${c}"`);
         return n;
@@ -92,11 +94,15 @@ export async function loadMarketShare() {
   const series = kept.map((r) => ({
     name: r.name,
     subject: r.name === SUBJECT,
+    feature: r.feature,
+    color: r.color,
     values: blankLeadingTrailingZeros(r.values),
   }));
 
-  // Subject last so it paints over the context lines.
-  series.sort((a, b) => Number(a.subject) - Number(b.subject));
+  // Paint order: folded context first, then the featured brokerages, then the
+  // subject on top of everything.
+  const rank = (s) => (s.subject ? 2 : s.feature ? 1 : 0);
+  series.sort((a, b) => rank(a) - rank(b));
 
   return { years, series, excluded: merged.length - kept.length };
 }

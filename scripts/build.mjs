@@ -12,7 +12,7 @@ import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { emphasisLineChart, dataTable } from "./chart.mjs";
+import { emphasisLineChart, lineLegend, dataTable } from "./chart.mjs";
 import { loadMarketShare, TOP_N } from "./market-share.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -47,7 +47,7 @@ async function buildCharts() {
     },
   );
 
-  return { "market-share": svg + "\n" + table };
+  return { "market-share": svg + "\n" + lineLegend(series) + "\n" + table };
 }
 
 async function readPages(charts) {

@@ -93,3 +93,39 @@
 }
 
 .chart__tip-num { font-variant-numeric: tabular-nums; }
+
+/* --- legend -------------------------------------------------------------
+   Identity never rests on colour alone, so a legend is present whenever more
+   than one series is drawn. */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin: 0.1in 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 7pt;
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* The subject reads first, before any of the context brokerages. */
+.legend__item.is-subject { font-weight: 700; color: var(--navy); }
+.legend__item.is-folded { color: rgba(0, 0, 0, 0.45); }
+
+/* Mirrors the mark: a line key, because these are lines. */
+.legend__key {
+  width: 15px;
+  height: 2.5px;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}

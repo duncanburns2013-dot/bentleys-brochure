@@ -20,19 +20,37 @@
 # merge_into folds an absorbed brokerage's history into its acquirer so the
 # acquirer's line runs continuously across the deal.
 #
-brokerage,merge_into,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025
-"Bentley's",,2.71,8.77,11.42,14.86,13.79,15.2,16.53,11.8,15.6,15.79
-"RE/MAX On The River",,19.61,16.17,12.15,12.9,9.99,5.46,2.91,1.52,0.0,0.0
-"William Raveis",,10.46,8.8,8.77,9.53,8.06,5.95,4.03,2.66,4.31,3.82
-"Keller Williams",,15.37,13.8,13.0,11.65,9.52,5.9,8.79,9.58,10.56,7.75
-"Stone Ridge Properties",,10.19,10.04,10.48,8.02,7.72,7.94,8.14,8.25,0.0,0.0
-"Lamacchia Realty",,0.0,0.0,0.0,0.0,0.0,0.96,0.95,0.0,7.26,5.42
-"Realty One Group Nest",,0.0,0.0,0.0,0.0,0.0,2.93,4.89,7.04,7.55,10.18
-"Gibson Sotheby's",,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.85,3.89,3.92
-"Fruh Realty",Gibson Sotheby's,0.0,0.0,0.85,3.55,4.07,4.05,4.45,0.0,0.0,0.0
-"Coldwell Banker",,6.19,4.75,5.43,3.14,2.58,3.42,3.76,2.25,2.78,2.82
-"Compass",,0.0,0.0,0.27,0.63,1.35,1.63,1.51,1.45,3.78,3.47
-"Bean Group",,1.81,1.79,1.08,1.07,1.21,1.22,0.84,0.46,0.0,0.0
-"J. Barrett & Company",,0.5,1.37,1.65,0.28,1.13,0.78,0.44,0.69,0.42,0.0
-"Redfin",,0.49,0.8,0.98,1.01,1.18,0.84,0.78,0.46,0.62,0.0
-"Advisors Living",,0.0,0.0,0.33,0.54,0.39,1.04,2.22,2.69,0.77,0.0
+# feature=1 draws the brokerage in its own colour and puts it in the legend.
+# feature=0 draws it in the shared neutral as context.
+#
+# COLOURS are adapted from the owner's Flourish palette, re-stepped for a
+# cream page. Ten distinct line colours is past what any palette can hold
+# legibly, so five carry the story and the rest fold to one neutral. Changes
+# from Flourish, each forced by a measured failure on a #f7f5ee surface:
+#   Keller Williams        #fd0808 -> #d21414  (bright red, too hot for print)
+#   Stone Ridge            #2f5e08 -> #00806b  (green vs red was dE 2.3 under
+#                                               protanopia - indistinguishable)
+#   Realty One Group Nest  #a06808 -> #b8741a  (brown vs green was dE 1.1
+#                                               under protanopia)
+#   RE/MAX On The River    #a0a0a0 -> #6b4fa8  (grey collided with the neutral
+#                                               used for the folded tail)
+# Bentley's navy is unchanged. Validated all-pairs: contrast passes for all
+# five, normal-vision separation passes, CVD worst pair is dE 6.1 which is
+# legal with the legend and direct labels present.
+#
+brokerage,merge_into,color,feature,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025
+"Bentley's",,#1e335e,1,2.71,8.77,11.42,14.86,13.79,15.2,16.53,11.8,15.6,15.79
+"RE/MAX On The River",,#6b4fa8,1,19.61,16.17,12.15,12.9,9.99,5.46,2.91,1.52,0.0,0.0
+"Keller Williams",,#d21414,1,15.37,13.8,13.0,11.65,9.52,5.9,8.79,9.58,10.56,7.75
+"Stone Ridge Properties",,#00806b,1,10.19,10.04,10.48,8.02,7.72,7.94,8.14,8.25,0.0,0.0
+"Realty One Group Nest",,#b8741a,1,0.0,0.0,0.0,0.0,0.0,2.93,4.89,7.04,7.55,10.18
+"William Raveis",,,0,10.46,8.8,8.77,9.53,8.06,5.95,4.03,2.66,4.31,3.82
+"Lamacchia Realty",,,0,0.0,0.0,0.0,0.0,0.0,0.96,0.95,0.0,7.26,5.42
+"Gibson Sotheby's",,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.85,3.89,3.92
+"Fruh Realty",Gibson Sotheby's,,0,0.0,0.0,0.85,3.55,4.07,4.05,4.45,0.0,0.0,0.0
+"Coldwell Banker",,,0,6.19,4.75,5.43,3.14,2.58,3.42,3.76,2.25,2.78,2.82
+"Compass",,,0,0.0,0.0,0.27,0.63,1.35,1.63,1.51,1.45,3.78,3.47
+"Bean Group",,,0,1.81,1.79,1.08,1.07,1.21,1.22,0.84,0.46,0.0,0.0
+"J. Barrett & Company",,,0,0.5,1.37,1.65,0.28,1.13,0.78,0.44,0.69,0.42,0.0
+"Redfin",,,0,0.49,0.8,0.98,1.01,1.18,0.84,0.78,0.46,0.62,0.0
+"Advisors Living",,,0,0.0,0.0,0.33,0.54,0.39,1.04,2.22,2.69,0.77,0.0

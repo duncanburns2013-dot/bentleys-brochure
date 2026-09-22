@@ -130,7 +130,9 @@ ${parts.join("\n")}
    it cannot do, and which no amount of secondary encoding would fix.
 --------------------------------------------------------------------------- */
 
-const CONTEXT = "rgba(30, 51, 94, 0.22)";
+/* The shared neutral for brokerages folded out of the legend. Deliberately
+   recessive: it is context, not a categorical slot. */
+const CONTEXT = "#938f84";
 
 /**
  * @param {{name: string, values: (number|null)[], subject?: boolean}[]} series
@@ -185,12 +187,20 @@ export function emphasisLineChart(series, labels, opts = {}) {
     return out.join(" ");
   }
 
-  const context = series.filter((s) => !s.subject);
   const subject = series.find((s) => s.subject);
 
-  for (const s of context) {
+  /* Ten distinct line colours is past what a palette can hold legibly, so the
+     brokerages that carry the story are coloured and the rest share one
+     neutral. Folded lines are drawn first and thinner so they never compete
+     with the ones the reader is meant to follow. */
+  for (const s of series.filter((x) => !x.subject && !x.feature)) {
     const d = path(s.values);
-    if (d) parts.push(`<path d="${d}" fill="none" stroke="${CONTEXT}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>`);
+    if (d) parts.push(`<path d="${d}" fill="none" stroke="${CONTEXT}" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round"/>`);
+  }
+
+  for (const s of series.filter((x) => !x.subject && x.feature)) {
+    const d = path(s.values);
+    if (d) parts.push(`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round"/>`);
   }
 
   if (subject) {
@@ -233,6 +243,31 @@ export function emphasisLineChart(series, labels, opts = {}) {
   return `<svg class="chart__svg" viewBox="0 0 ${width} ${height}" role="img" preserveAspectRatio="xMidYMid meet">
 ${parts.join("\n")}
 </svg>`;
+}
+
+/* A legend is always present for two or more series: it is the dependable
+   identity channel, so nothing is carried by colour alone. Mirrors the mark —
+   a short line key, because these are lines. */
+export function lineLegend(series, { foldedLabel = "Other brokerages" } = {}) {
+  const items = series
+    .filter((s) => s.subject || s.feature)
+    .sort((a, b) => Number(b.subject) - Number(a.subject))
+    .map(
+      (s) =>
+        `<li class="legend__item${s.subject ? " is-subject" : ""}">` +
+        `<span class="legend__key" style="background:${s.color}"></span>` +
+        `<span class="legend__name">${esc(s.name)}</span></li>`,
+    );
+
+  if (series.some((s) => !s.subject && !s.feature)) {
+    items.push(
+      `<li class="legend__item is-folded">` +
+        `<span class="legend__key" style="background:${CONTEXT}"></span>` +
+        `<span class="legend__name">${esc(foldedLabel)}</span></li>`,
+    );
+  }
+
+  return `<ul class="legend">\n${items.join("\n")}\n</ul>`;
 }
 
 /** Accessible fallback, and the reason a tooltip is allowed to be an enhancement. */

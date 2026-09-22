@@ -94,12 +94,18 @@
 
 .share__lede { max-width: 4.5in; margin-top: 0.22in; }
 
+/* Column, not row: the legend belongs under the plot. Laid beside it, the
+   legend lands in the gutter reserved for the endpoint label and wraps every
+   brokerage name onto two lines. */
 .share__chart {
   flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   margin: 0.24in 0 0;
 }
+
+.share__chart .legend { margin-top: 0.14in; }
 
 .share__source {
   margin: 0.16in 0 0;
