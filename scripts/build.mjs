@@ -31,7 +31,7 @@ async function readPages() {
    file:// with no server — renders correctly. Chrome's PDF renderer reads it
    the same way. */
 async function readStyles(forPrint) {
-  const names = ["fonts.css", "tokens.css", "book.css", "pages.css"];
+  const names = ["fonts.css", "tokens.css", "book.css", "chart.css", "pages.css"];
   if (forPrint) names.push("print.css");
   const parts = [];
   for (const n of names) {
@@ -205,6 +205,46 @@ ${pages.join("\n\n")}
 
   fit();
   sync();
+
+  // ----- chart hover layer -------------------------------------------------
+  // The marks are baked into the SVG at build time; this only adds the
+  // readout. Everything it shows is also in the chart's table view, so the
+  // tooltip enhances and never gates. Delegated, because the flip library
+  // moves pages around in the DOM.
+  var tip = document.createElement('div');
+  tip.className = 'chart__tip';
+  tip.setAttribute('role', 'status');
+  var tipValue = document.createElement('span');
+  tipValue.className = 'chart__tip-value';
+  var tipLabel = document.createElement('span');
+  tipLabel.className = 'chart__tip-label';
+  tip.appendChild(tipValue);
+  tip.appendChild(tipLabel);
+  document.body.appendChild(tip);
+
+  function showTip(col) {
+    // Labels come from the data file — textContent, never innerHTML.
+    tipValue.textContent = col.getAttribute('data-value') || '';
+    tipLabel.textContent = col.getAttribute('data-label') || '';
+    var bar = col.querySelector('.chart__bar');
+    var r = (bar || col).getBoundingClientRect();
+    tip.style.left = (r.left + r.width / 2) + 'px';
+    tip.style.top = r.top + 'px';
+    tip.setAttribute('data-show', 'true');
+  }
+  function hideTip() { tip.setAttribute('data-show', 'false'); }
+
+  document.addEventListener('pointermove', function (e) {
+    var col = e.target.closest && e.target.closest('.chart__col');
+    if (col) showTip(col); else hideTip();
+  });
+  document.addEventListener('focusin', function (e) {
+    var col = e.target.closest && e.target.closest('.chart__col');
+    if (col) showTip(col);
+  });
+  document.addEventListener('focusout', hideTip);
+  window.addEventListener('scroll', hideTip, true);
+  flip.on('flip', hideTip);
 })();
 </script>
 </body>

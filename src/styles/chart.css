@@ -1,0 +1,81 @@
+/* ---------------------------------------------------------------------------
+   Chart chrome.
+
+   Text wears text tokens, never the series colour — the navy column beside a
+   label is what carries identity. Grid and axes stay recessive so the data is
+   the only loud thing on the page.
+--------------------------------------------------------------------------- */
+
+.chart { margin: 0; }
+
+.chart__svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.chart__tick,
+.chart__axis {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  fill: rgba(0, 0, 0, 0.5);
+}
+
+.chart__value {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 22px;
+  fill: var(--navy);
+}
+
+.chart__bar { transition: opacity 120ms ease; }
+
+/* The accessible fallback. Present in the markup, shown only when a reader
+   asks for it or when the page is read without styles. */
+.chart__table { display: none; }
+
+/* --- screen-only hover layer -------------------------------------------
+   Print never sees any of this: the PDF build does not load the flipbook
+   shell, and a tooltip has no meaning on paper. */
+
+.is-flip .chart__col { cursor: default; }
+.is-flip .chart__col:hover .chart__bar,
+.is-flip .chart__col:focus-visible .chart__bar { opacity: 0.78; }
+
+.is-flip .chart__col:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.chart__tip {
+  position: absolute;
+  z-index: 20;
+  min-width: 118px;
+  padding: 9px 12px;
+  border-radius: 7px;
+  background: var(--navy);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -112%);
+  transition: opacity 110ms ease;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+.chart__tip[data-show="true"] { opacity: 1; }
+
+/* Value leads, label follows — the reader already has the year and wants
+   the number. */
+.chart__tip-value {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.chart__tip-label {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
