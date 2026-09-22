@@ -72,20 +72,26 @@ function flipDoc(css, pages) {
 <style>
 ${css}
 
-/* ----- flipbook shell (screen only; never part of the print build) ----- */
+/* ----- flipbook shell (screen only; never part of the print build) -----
+
+   Pages are authored at a true 8.5 x 11in. StPageFlip's own "stretch" sizing
+   would overwrite those dimensions and collapse the page grids, so the book
+   is built at full size and the whole stage is scaled to fit instead. */
 body.is-flip {
   background: #2b2f38;
   min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+#stage {
+  position: fixed;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
 }
-#book { --page-scale: 1; }
-#book .page {
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42);
-  background: var(--cream);
-}
+#scaler { transform-origin: center center; }
+#book .page { box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42); }
 .flip-nav {
   position: fixed;
   bottom: 18px;
@@ -119,8 +125,12 @@ body.is-flip {
 </head>
 <body class="is-flip">
 
-<div id="book">
+<div id="stage">
+  <div id="scaler">
+    <div id="book">
 ${pages.join("\n\n")}
+    </div>
+  </div>
 </div>
 
 <nav class="flip-nav" aria-label="Page navigation">
@@ -133,28 +143,41 @@ ${pages.join("\n\n")}
 <script>
 (function () {
   var el = document.getElementById('book');
+  var scaler = document.getElementById('scaler');
   var pages = Array.prototype.slice.call(el.querySelectorAll('.page'));
 
-  // Pages are authored in inches. Ask the browser what that is in CSS pixels
-  // rather than assuming 96dpi.
+  // Pages are authored in inches. Measure what that is in CSS pixels rather
+  // than assuming 96dpi.
   var probe = pages[0].getBoundingClientRect();
   var PW = Math.round(probe.width), PH = Math.round(probe.height);
 
   var flip = new St.PageFlip(el, {
     width: PW,
     height: PH,
-    size: 'stretch',
-    minWidth: 240,
-    maxWidth: PW,
-    minHeight: 320,
-    maxHeight: PH,
+    size: 'fixed',
     maxShadowOpacity: 0.5,
     showCover: true,
     mobileScrollSupport: true,
-    usePortrait: true
+    usePortrait: true,
+    drawShadow: true
   });
 
   flip.loadFromHTML(pages);
+
+  // Two pages side by side once past the cover; one page on a narrow screen.
+  function fit() {
+    var spread = flip.getOrientation() === 'landscape';
+    var bw = PW * (spread ? 2 : 1), bh = PH;
+    var pad = 64; // room for the nav pill
+    var s = Math.min(
+      (window.innerWidth - 32) / bw,
+      (window.innerHeight - pad) / bh,
+      1
+    );
+    scaler.style.transform = 'scale(' + s + ')';
+    scaler.style.width = bw + 'px';
+    scaler.style.height = bh + 'px';
+  }
 
   var cur = document.getElementById('cur');
   var prev = document.getElementById('prev');
@@ -166,13 +189,18 @@ ${pages.join("\n\n")}
     prev.disabled = i <= 0;
     next.disabled = i >= flip.getPageCount() - 1;
   }
+
   flip.on('flip', sync);
+  flip.on('changeOrientation', fit);
   prev.addEventListener('click', function () { flip.flipPrev(); });
   next.addEventListener('click', function () { flip.flipNext(); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowLeft') flip.flipPrev();
     if (e.key === 'ArrowRight') flip.flipNext();
   });
+  window.addEventListener('resize', fit);
+
+  fit();
   sync();
 })();
 </script>
