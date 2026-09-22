@@ -1,0 +1,87 @@
+/* ---------------------------------------------------------------------------
+   Per-page layout. One block per page, in book order.
+--------------------------------------------------------------------------- */
+
+/* --- 01 cover ----------------------------------------------------------- */
+
+.page--cover { display: grid; grid-template-rows: 1fr 5.1in; }
+
+.cover__field {
+  position: relative;
+  padding: 0.85in var(--margin) 0.55in var(--gutter-margin);
+  display: flex;
+  flex-direction: column;
+}
+
+.cover__logo { width: 3.35in; }
+
+.cover__headline { margin-top: auto; }
+
+.cover__stroke {
+  width: 0.92in;
+  border: 0;
+  border-top: 1.5px solid var(--cyan);
+  margin: 0 0 0.26in;
+}
+
+.cover__title {
+  font-size: 47pt;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+.cover__markets {
+  margin: 0.3in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 7.5pt;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+/* The plate sits inset from the outer edge, bleeding off the foot — the
+   reference book's cover move. */
+.cover__plate {
+  margin: 0 0 0 var(--gutter-margin);
+  overflow: hidden;
+}
+
+/* --- 08 our numbers work for you ---------------------------------------- */
+
+.page--numbers { display: flex; flex-direction: column; }
+
+.numbers__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.46in 0.4in;
+  margin-top: 0.06in;
+}
+
+.stat__unit {
+  font-size: 0.52em;
+  letter-spacing: 0.01em;
+  margin-left: 0.02em;
+}
+
+.numbers__source {
+  margin: 0.34in 0 0.5in;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 7pt;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.5);
+  max-width: 4.6in;
+}
+
+/* The plate takes whatever height is left rather than a fixed band, so the
+   page never opens a pocket of dead cream above it. */
+.numbers__plate {
+  flex: 1;
+  min-height: 3.4in;
+  margin: 0 calc(var(--margin) * -1) calc(var(--margin) * -1) calc(var(--margin) * -1);
+  overflow: hidden;
+}
+
+/* A folio would land inside the bleeding photograph. */
+.page--numbers .folio { display: none; }

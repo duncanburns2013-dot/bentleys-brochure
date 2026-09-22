@@ -1,0 +1,39 @@
+/* ---------------------------------------------------------------------------
+   Design tokens — Bentley's listing presentation
+
+   Colours are Bentley's APPROVED pair, confirmed by the owner. They are
+   deliberately lighter than the 2026 RE/MAX Collection manual's #000E35 /
+   #A3D4F2. Do not "correct" them toward the manual — see docs/.
+
+   Typography follows the Collection standards (manual p.64) via the manual's
+   own sanctioned fallback path, because Gotham and Miller Display are
+   commercial licences Bentley's may not hold. If the licences turn up, the
+   only edit needed is the two font-family values below.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* Brand */
+  --navy: #1e335e;
+  --cyan: #c9ebfc;
+  --cream: #f7f5ee;
+  --ink: #000000;
+  --white: #ffffff;
+
+  /* Derived — tints of the brand pair, no new hues introduced */
+  --navy-deep: #16264a;
+  --rule-on-navy: rgba(201, 235, 252, 0.38);
+  --rule-on-cream: rgba(30, 51, 94, 0.22);
+  --body-on-navy: rgba(247, 245, 238, 0.82);
+  --body-on-cream: rgba(0, 0, 0, 0.74);
+
+  /* Type — Gotham Condensed / Miller Display when licensed */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Montserrat", Arial, Helvetica, sans-serif;
+
+  /* Page geometry, in real print units */
+  --trim-w: 8.5in;
+  --trim-h: 11in;
+  --bleed: 0.125in;
+  --margin: 0.75in;
+  --gutter-margin: 0.95in; /* inner edge, allows for the saddle stitch */
+}

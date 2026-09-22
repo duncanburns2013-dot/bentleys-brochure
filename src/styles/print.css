@@ -1,0 +1,41 @@
+/* ---------------------------------------------------------------------------
+   Print rules. Only loaded by dist/print.html, the PDF source.
+
+   The page box is trim + bleed on every side. Each .page is shifted out by
+   one bleed so full-bleed artwork runs past the trim line, which is what the
+   print shop needs in order to cut cleanly.
+--------------------------------------------------------------------------- */
+
+@page {
+  size: 8.75in 11.25in; /* 8.5 x 11 trim + 0.125in bleed all round */
+  margin: 0;
+}
+
+html, body { background: #ffffff; }
+
+body { margin: 0; }
+
+.page {
+  margin: 0;
+  box-shadow: none;
+  /* Grow into the bleed so artwork extends past the trim on all four sides. */
+  width: calc(var(--trim-w) + var(--bleed) * 2);
+  height: calc(var(--trim-h) + var(--bleed) * 2);
+}
+
+/* Push the live area back in by one bleed so the layout keeps its true
+   margins relative to the trim line, not the bleed edge. */
+.page--recto { padding: calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)); }
+.page--verso { padding: calc(var(--margin) + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)); }
+
+.cover__field { padding: calc(0.85in + var(--bleed)) calc(var(--margin) + var(--bleed)) 0.55in calc(var(--gutter-margin) + var(--bleed)); }
+.cover__plate { margin-left: calc(var(--gutter-margin) + var(--bleed)); }
+
+.numbers__plate {
+  margin-left: calc((var(--margin) + var(--bleed)) * -1);
+  margin-right: calc((var(--gutter-margin) + var(--bleed)) * -1);
+  margin-bottom: calc((var(--margin) + var(--bleed)) * -1);
+}
+
+/* Colour must not be "optimised" away by the renderer. */
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
