@@ -7,18 +7,21 @@
 
 /* --- 01 cover ----------------------------------------------------------- */
 
-.layout-cover { display: grid; grid-template-rows: 1fr 5.1in; }
+/* The masthead block takes only the height it needs; the photograph takes
+   everything left. Pinning the plate to a fixed height instead left a large
+   pocket of empty navy between the logo and the headline. */
+.layout-cover { display: grid; grid-template-rows: auto 1fr; }
 
 .cover__field {
   position: relative;
-  padding: 0.85in var(--margin) 0.55in var(--gutter-margin);
+  padding: 0.85in var(--margin) 0.5in var(--gutter-margin);
   display: flex;
   flex-direction: column;
 }
 
 .cover__logo { width: 3.35in; }
 
-.cover__headline { margin-top: auto; }
+.cover__headline { margin-top: 1.05in; }
 
 .cover__stroke {
   width: 0.92in;
@@ -34,11 +37,11 @@
 }
 
 .cover__markets {
-  margin: 0.3in 0 0;
+  margin: 0.28in 0 0;
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 7.5pt;
-  letter-spacing: 0.19em;
+  font-size: 7pt;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--cyan);
 }
