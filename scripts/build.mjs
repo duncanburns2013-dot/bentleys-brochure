@@ -187,64 +187,103 @@ ${pages.join("\n\n")}
 (function () {
   var el = document.getElementById('book');
   var scaler = document.getElementById('scaler');
-  var pages = Array.prototype.slice.call(el.querySelectorAll('.page'));
 
   // Pages are authored in inches. Measure what that is in CSS pixels rather
   // than assuming 96dpi.
-  var probe = pages[0].getBoundingClientRect();
+  var first = el.querySelector('.page');
+  var probe = first.getBoundingClientRect();
   var PW = Math.round(probe.width), PH = Math.round(probe.height);
 
-  var flip = new St.PageFlip(el, {
-    width: PW,
-    height: PH,
-    size: 'fixed',
-    maxShadowOpacity: 0.5,
-    showCover: true,
-    mobileScrollSupport: true,
-    usePortrait: true,
-    drawShadow: true
+  // A pristine copy, because loadFromHTML consumes the nodes it is given and
+  // the book is rebuilt when the layout crosses the breakpoint.
+  var SOURCE = Array.prototype.map.call(el.querySelectorAll('.page'), function (p) {
+    return p.cloneNode(true);
   });
 
-  flip.loadFromHTML(pages);
+  // Below this the two pages of a spread are too small to read, so a phone
+  // gets one page at a time instead.
+  var SPREAD_MIN = 820;
+  var wantsSpread = function () { return window.innerWidth >= SPREAD_MIN; };
 
-  // Two pages side by side once past the cover; one page on a narrow screen.
+  var flip = null;
+  var spread = null;
+
   function fit() {
-    var spread = flip.getOrientation() === 'landscape';
     var bw = PW * (spread ? 2 : 1), bh = PH;
     var pad = 64; // room for the nav pill
-    var s = Math.min(
-      (window.innerWidth - 32) / bw,
-      (window.innerHeight - pad) / bh,
-      1
-    );
-    scaler.style.transform = 'scale(' + s + ')';
+    var s = Math.min((window.innerWidth - 32) / bw, (window.innerHeight - pad) / bh, 1);
     scaler.style.width = bw + 'px';
     scaler.style.height = bh + 'px';
+    scaler.style.transform = 'scale(' + s + ')';
   }
 
   var cur = document.getElementById('cur');
+  var total = document.getElementById('total');
   var prev = document.getElementById('prev');
   var next = document.getElementById('next');
 
   function sync() {
+    if (!flip) return;
     var i = flip.getCurrentPageIndex();
-    cur.textContent = i + 1;
+    var n = flip.getPageCount();
+    // In a spread the reader is looking at two leaves at once, so the counter
+    // names both rather than pretending one is showing.
+    var right = spread && i > 0 && i < n - 1 ? i + 2 : 0;
+    cur.textContent = right ? (i + 1) + '\\u2013' + right : (i + 1);
+    total.textContent = n;
     prev.disabled = i <= 0;
-    next.disabled = i >= flip.getPageCount() - 1;
+    next.disabled = i >= n - 1;
   }
 
-  flip.on('flip', sync);
-  flip.on('changeOrientation', fit);
-  prev.addEventListener('click', function () { flip.flipPrev(); });
-  next.addEventListener('click', function () { flip.flipNext(); });
+  function build(startIndex) {
+    if (flip) { try { flip.destroy(); } catch (e) {} }
+    spread = wantsSpread();
+
+    // The library decides portrait vs landscape from the width available to
+    // it, so the container has to be two pages wide BEFORE init or it will
+    // always choose a single page. The transform does the fitting afterwards.
+    scaler.style.width = (PW * (spread ? 2 : 1)) + 'px';
+    scaler.style.height = PH + 'px';
+
+    el.innerHTML = '';
+    var fresh = SOURCE.map(function (p) { return p.cloneNode(true); });
+    fresh.forEach(function (p) { el.appendChild(p); });
+
+    flip = new St.PageFlip(el, {
+      width: PW,
+      height: PH,
+      size: 'fixed',
+      maxShadowOpacity: 0.5,
+      showCover: true,          // the cover stands alone, as a real cover does
+      usePortrait: !spread,
+      mobileScrollSupport: true,
+      drawShadow: true
+    });
+
+    flip.loadFromHTML(fresh);
+    flip.on('flip', function () { sync(); hideTip(); });
+
+    if (startIndex) {
+      try { flip.turnToPage(startIndex); } catch (e) {}
+    }
+    fit();
+    sync();
+  }
+
+  prev.addEventListener('click', function () { if (flip) flip.flipPrev(); });
+  next.addEventListener('click', function () { if (flip) flip.flipNext(); });
   document.addEventListener('keydown', function (e) {
+    if (!flip) return;
     if (e.key === 'ArrowLeft') flip.flipPrev();
     if (e.key === 'ArrowRight') flip.flipNext();
   });
-  window.addEventListener('resize', fit);
 
-  fit();
-  sync();
+  // Only a rebuild changes single-page to spread; every other resize is just
+  // a rescale, which is cheap.
+  window.addEventListener('resize', function () {
+    if (wantsSpread() !== spread) build(flip ? flip.getCurrentPageIndex() : 0);
+    else fit();
+  });
 
   // ----- chart hover layer -------------------------------------------------
   // The marks are baked into the SVG at build time; this only adds the
@@ -323,7 +362,9 @@ ${pages.join("\n\n")}
   });
   document.addEventListener('focusout', hideTip);
   window.addEventListener('scroll', hideTip, true);
-  flip.on('flip', hideTip);
+
+  // Built last, so the tooltip it hides on every flip already exists.
+  build(0);
 })();
 </script>
 </body>
