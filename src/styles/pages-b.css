@@ -442,7 +442,10 @@
 
 /* --- 20 back cover ------------------------------------------------------- */
 
-.layout-back {
+/* Specificity has to beat `.page--bleed > .page__inner { padding: 0 }`, or the
+   back cover's content sits flush against the trim with the logo half off the
+   page. */
+.page--bleed > .page__inner.layout-back {
   justify-content: flex-end;
   padding: var(--margin) var(--margin) 1.1in var(--gutter-margin);
 }
@@ -486,3 +489,42 @@
   overflow: hidden;
 }
 .layout-team .folio { display: none; }
+
+/* --- 18 reach against the industry --------------------------------------- */
+
+.reach__lede { max-width: 4.6in; margin-top: 0.22in; }
+
+.reach__chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.26in 0 0;
+}
+
+.bar__name {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  fill: rgba(0, 0, 0, 0.62);
+}
+.bar__name.is-subject { font-weight: 700; fill: var(--navy); }
+
+.bar__value {
+  font-family: var(--font-display);
+  font-size: 19px;
+  fill: rgba(0, 0, 0, 0.55);
+  font-variant-numeric: lining-nums;
+}
+.bar__value.is-subject { fill: var(--navy); font-size: 25px; }
+
+.reach__source {
+  margin: 0.2in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 6.5pt;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.45);
+  max-width: 6in;
+}

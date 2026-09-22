@@ -38,4 +38,4 @@ body { margin: 0; }
 
 /* The back cover sets its own padding, so it needs the bleed added back the
    same way the recto/verso rules do. */
-.layout-back { padding: calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(1.1in + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)); }
+.page--bleed > .page__inner.layout-back { padding: calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(1.1in + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)); }

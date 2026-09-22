@@ -245,6 +245,61 @@ ${parts.join("\n")}
 </svg>`;
 }
 
+/* ---------------------------------------------------------------------------
+   Horizontal bar chart, one subject emphasised.
+
+   Horizontal because the categories are brand names — set them across the top
+   of vertical columns and they either collide or turn sideways, and a reader
+   should never have to tilt their head at a printed page.
+--------------------------------------------------------------------------- */
+
+export function barChartH(rows, opts = {}) {
+  const {
+    width = 940,
+    rowHeight = 30,
+    labelWidth = 186,
+    valueWidth = 62,
+    format = (n) => String(n),
+  } = opts;
+
+  const top = Math.max(...rows.map((r) => r.value));
+  const plotW = width - labelWidth - valueWidth;
+  const height = rows.length * rowHeight + 8;
+  const parts = [];
+
+  rows.forEach((r, i) => {
+    const y = i * rowHeight + 4;
+    const bh = Math.min(24, rowHeight - 18);
+    const bw = Math.max(2, (r.value / top) * plotW);
+    const mid = y + rowHeight / 2;
+
+    parts.push(
+      `<text x="${labelWidth - 14}" y="${(mid + 4).toFixed(1)}" text-anchor="end" class="bar__name${r.subject ? " is-subject" : ""}">${esc(r.name)}</text>`,
+      // 4px rounded data-end, square at the baseline.
+      `<path d="${barPath(labelWidth, mid - bh / 2, bw, bh, 4)}" fill="${r.subject ? NAVY : CONTEXT}"/>`,
+      `<text x="${(labelWidth + bw + 11).toFixed(1)}" y="${(mid + 5).toFixed(1)}" class="bar__value${r.subject ? " is-subject" : ""}">${esc(format(r.value, r))}</text>`,
+    );
+  });
+
+  return `<svg class="chart__svg" viewBox="0 0 ${width} ${height}" role="img" preserveAspectRatio="xMidYMid meet">
+${parts.join("\n")}
+</svg>`;
+}
+
+/* Rounded on the data end, square where it meets the baseline. */
+function barPath(x, y, w, h, r) {
+  const rad = Math.min(r, w, h / 2);
+  return [
+    `M${x} ${y}`,
+    `H${x + w - rad}`,
+    `a${rad} ${rad} 0 0 1 ${rad} ${rad}`,
+    `V${y + h - rad}`,
+    `a${rad} ${rad} 0 0 1 ${-rad} ${rad}`,
+    `H${x}`,
+    "Z",
+  ].join(" ");
+}
+
 /* A legend is always present for two or more series: it is the dependable
    identity channel, so nothing is carried by colour alone. Mirrors the mark —
    a short line key, because these are lines. */

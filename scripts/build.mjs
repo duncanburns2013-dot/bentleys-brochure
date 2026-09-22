@@ -12,7 +12,7 @@ import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { emphasisLineChart, lineLegend, dataTable } from "./chart.mjs";
+import { emphasisLineChart, lineLegend, barChartH, dataTable } from "./chart.mjs";
 import { loadMarketShare, TOP_N } from "./market-share.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -47,7 +47,46 @@ async function buildCharts() {
     },
   );
 
-  return { "market-share": svg + "\n" + lineLegend(series) + "\n" + table };
+  /* Countries and territories per brand, full-year 2024, per RE/MAX, LLC.
+     These are RE/MAX-network figures, NOT the wider Real RE/MAX Group's 120+.
+     Page 18 says which, because mixing the two scopes reads as a
+     contradiction to anyone who notices both. */
+  const REACH = [
+    { name: "RE/MAX", value: 110, plus: true, subject: true },
+    { name: "Sotheby's", value: 84 },
+    { name: "Century 21", value: 79 },
+    { name: "Keller Williams", value: 60 },
+    { name: "Coldwell Banker", value: 45 },
+    { name: "ERA", value: 37 },
+    { name: "eXp", value: 27 },
+    { name: "Realty ONE Group", value: 25, plus: true },
+    { name: "Berkshire Hathaway HS", value: 11 },
+    { name: "Better Homes & Gardens", value: 6 },
+    { name: "Weichert", value: 2 },
+    { name: "Real", value: 2 },
+    { name: "Compass", value: 1 },
+    { name: "HomeSmart", value: 1 },
+  ];
+
+  const reach = barChartH(REACH, {
+    format: (n, r) => n + (r.plus ? "+" : ""),
+    // Taller rows: at the default the fourteen bars occupy a 2:1 block that
+    // floats in the middle of a portrait page.
+    rowHeight: 46,
+  });
+  const reachTable = dataTable(
+    REACH.map((r) => ({ label: r.name, value: r.value + (r.plus ? "+" : "") })),
+    {
+      caption: "Countries and territories by brand, full-year 2024",
+      labelHead: "Brand",
+      valueHead: "Countries",
+    },
+  );
+
+  return {
+    "market-share": svg + "\n" + lineLegend(series) + "\n" + table,
+    "reach": reach + "\n" + reachTable,
+  };
 }
 
 async function readPages(charts) {
