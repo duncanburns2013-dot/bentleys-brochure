@@ -1,0 +1,488 @@
+/* ---------------------------------------------------------------------------
+   Per-page layout, pages 2-20. Same rule as pages.css: layout classes belong
+   on .page__inner, never on .page.
+
+   Shared idioms, so the book reads as one object rather than twenty designs:
+   a full-bleed plate at the foot, a two-column body, and a labelled grid.
+--------------------------------------------------------------------------- */
+
+/* --- shared -------------------------------------------------------------- */
+
+/* A plate that bleeds off the outer and foot edges. Negative margins are
+   re-stated in print.css against the bleed, so they live in one place here. */
+.plate-foot {
+  margin: auto calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+.cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.34in;
+  margin-top: 0.2in;
+}
+.cols-2 .body { max-width: none; }
+
+.label-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.34in 0.4in;
+  margin-top: 0.3in;
+}
+
+.item-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 7.5pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.08in;
+}
+.page--navy .item-label { color: var(--cyan); }
+
+.item-body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 8.5pt;
+  line-height: 1.7;
+  color: var(--body-on-cream);
+}
+.page--navy .item-body { color: var(--body-on-navy); }
+
+.note-small {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 6.5pt;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* --- 02 letter ----------------------------------------------------------- */
+
+.letter__body { max-width: 4.15in; margin-top: 0.24in; }
+
+.letter__sign {
+  margin-top: 1.1em;
+  font-weight: 500;
+  color: var(--navy);
+}
+.letter__role {
+  font-weight: 300;
+  font-size: 7.5pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.letter__plates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.26in;
+  margin: auto 0 0;
+}
+
+/* --- 03 strategy --------------------------------------------------------- */
+
+.strategy__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.34in; margin-top: 0.22in; }
+.strategy__cols .body { max-width: none; }
+.strategy__plate {
+  margin: auto calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--gutter-margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+/* --- 04 community -------------------------------------------------------- */
+
+.community__lede { max-width: 4.3in; margin-top: 0.22in; }
+
+.community__markets { list-style: none; margin: 0.3in 0 0; padding: 0; }
+.community__markets li {
+  padding: 0.11in 0;
+  border-top: 1px solid var(--rule-on-cream);
+}
+.community__markets li:last-child { border-bottom: 1px solid var(--rule-on-cream); }
+
+.community__market {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13pt;
+  color: var(--navy);
+}
+.community__towns {
+  display: block;
+  margin-top: 0.03in;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 7.5pt;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.community__plate {
+  margin: auto calc((var(--gutter-margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+/* --- 05 process ---------------------------------------------------------- */
+
+.process__grid {
+  display: grid;
+  grid-template-columns: 1fr 3.35in;
+  gap: 0.4in;
+  margin-top: 0.24in;
+  flex: 1;
+}
+
+.process__steps { list-style: none; margin: 0; padding: 0; }
+
+.step { padding: 0.1in 0 0.13in; border-top: 1px solid var(--rule-on-cream); }
+.step:first-child { border-top: 0; padding-top: 0; }
+
+.step__n {
+  font-family: var(--font-display);
+  font-size: 21pt;
+  line-height: 1;
+  color: var(--navy);
+  font-variant-numeric: lining-nums;
+}
+.step__label {
+  display: block;
+  margin-top: 0.02in;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 7.5pt;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.step__body {
+  margin: 0.05in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 8pt;
+  line-height: 1.65;
+  color: var(--body-on-cream);
+}
+
+.process__plate {
+  margin: 0 calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) 0;
+  overflow: hidden;
+}
+
+/* --- 06 pricing ---------------------------------------------------------- */
+
+.pricing__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.34in; margin-top: 0.22in; }
+.pricing__cols .body { max-width: none; }
+
+.pricing__note {
+  margin: 0.3in 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 12pt;
+  line-height: 1.5;
+  color: var(--navy);
+  max-width: 5.4in;
+}
+
+.pricing__plate {
+  margin: auto calc((var(--gutter-margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+/* --- 07 brokerage -------------------------------------------------------- */
+
+.brokerage__grid {
+  display: grid;
+  grid-template-columns: 1fr 3.6in;
+  gap: 0.4in;
+  margin-top: 0.24in;
+  flex: 1;
+}
+.brokerage__text .body { max-width: none; }
+.brokerage__plate {
+  margin: 0 calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) 0;
+  overflow: hidden;
+}
+
+/* --- 10 marketing -------------------------------------------------------- */
+
+.marketing__lede { max-width: 4.2in; margin-top: 0.2in; }
+
+.marketing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3in;
+  margin-top: 0.3in;
+}
+.marketing__label,
+.presentation__label,
+.reporting__label {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 7.5pt;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.08in;
+}
+.marketing__body,
+.presentation__body,
+.reporting__body,
+.channel__body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 8pt;
+  line-height: 1.7;
+  color: var(--body-on-cream);
+}
+
+.marketing__plate {
+  margin: auto calc((var(--gutter-margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+/* --- 11 collection ------------------------------------------------------- */
+
+.collection__lede { max-width: 4.4in; margin-top: 0.22in; }
+
+.collection__points { list-style: none; margin: 0.26in 0 0; padding: 0; max-width: 5in; }
+.collection__points li {
+  position: relative;
+  padding: 0.07in 0 0.07in 0.3in;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: var(--body-on-cream);
+}
+.collection__points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15in;
+  width: 0.15in;
+  height: 1.5px;
+  background: var(--navy);
+}
+
+.collection__plate {
+  margin: auto calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--gutter-margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+/* --- 12 network (navy) --------------------------------------------------- */
+
+.network__lede { max-width: 5.1in; margin-top: 0.22in; }
+
+/* The map is a diagram with a cream ground of its own — contained, never
+   cropped, or the country list is cut off. */
+.network__plate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0.26in 0 0;
+}
+.photo--contain { object-fit: contain; height: auto; }
+
+.network__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3in;
+  margin-top: 0.26in;
+}
+.network__stats .stat__figure { font-size: 34pt; }
+.network__stats .stat__label { max-width: 1.7in; }
+
+/* --- 13 syndication ------------------------------------------------------ */
+
+.syndication__lede { max-width: 4.6in; margin-top: 0.22in; }
+
+.syndication__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3in 0.4in;
+  margin-top: 0.32in;
+}
+.channel__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13pt;
+  color: var(--navy);
+  margin-bottom: 0.05in;
+}
+
+/* --- 14 presentation ----------------------------------------------------- */
+
+.presentation__lede { max-width: 4.4in; margin-top: 0.2in; }
+.presentation__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.32in 0.4in;
+  margin-top: 0.32in;
+}
+
+/* --- 15 recognition ------------------------------------------------------ */
+
+.recognition__lede { max-width: 4.4in; margin-top: 0.2in; }
+
+.recognition__list { list-style: none; margin: 0.3in 0 0; padding: 0; }
+.award {
+  padding: 0.16in 0;
+  border-top: 1px solid var(--rule-on-cream);
+}
+.award:last-child { border-bottom: 1px solid var(--rule-on-cream); }
+.award__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 15pt;
+  line-height: 1.25;
+  color: var(--navy);
+}
+.award__meta {
+  display: block;
+  margin-top: 0.04in;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 7.5pt;
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.55);
+}
+.recognition__note {
+  margin: 0.24in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 6.5pt;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* --- 16 reporting -------------------------------------------------------- */
+
+.reporting__lede { max-width: 4.4in; margin-top: 0.2in; }
+.reporting__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.34in 0.4in;
+  margin-top: 0.32in;
+}
+
+/* --- 17 trust ------------------------------------------------------------ */
+
+.trust__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.34in; margin-top: 0.22in; }
+.trust__cols .body { max-width: none; }
+.trust__plate {
+  margin: auto calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--gutter-margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+
+/* --- 18 team ------------------------------------------------------------- */
+
+.team__lede { max-width: 4.6in; margin-top: 0.22in; }
+
+.team__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4in;
+  margin-top: 0.42in;
+}
+.team__grid .stat__figure { font-size: 46pt; }
+
+.team__note {
+  margin: 0.34in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 7pt;
+  letter-spacing: 0.06em;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* --- 19 next ------------------------------------------------------------- */
+
+.layout-next { justify-content: center; }
+.next__lede { max-width: 4.2in; margin-top: 0.22in; }
+
+.next__contact { margin: 0.5in 0 0; }
+.next__phone {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 36pt;
+  line-height: 1.1;
+  color: var(--navy);
+  font-variant-numeric: lining-nums;
+}
+.next__web {
+  margin: 0.06in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 9pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.next__markets {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1in 0.34in;
+  margin: 0.5in 0 0;
+  padding: 0.24in 0 0;
+  border-top: 1px solid var(--rule-on-cream);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 7pt;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* --- 20 back cover ------------------------------------------------------- */
+
+.layout-back {
+  justify-content: flex-end;
+  padding: var(--margin) var(--margin) 1.1in var(--gutter-margin);
+}
+.back__logo { width: 3.35in; }
+
+.back__rule {
+  width: 1.1in;
+  border: 0;
+  border-top: 1.5px solid var(--cyan);
+  margin: 0.34in 0 0.3in;
+}
+
+.back__contact {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14pt;
+  color: var(--cream);
+  font-variant-numeric: lining-nums;
+}
+.back__markets {
+  margin: 0.14in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 7pt;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.back__legal {
+  margin: 0.5in 0 0;
+  max-width: 4.4in;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 6pt;
+  line-height: 1.75;
+  color: rgba(247, 245, 238, 0.55);
+}
+
+.team__plate {
+  margin: auto calc((var(--gutter-margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1);
+  overflow: hidden;
+}
+.layout-team .folio { display: none; }

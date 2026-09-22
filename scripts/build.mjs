@@ -71,7 +71,7 @@ async function readPages(charts) {
    file:// with no server — renders correctly. Chrome's PDF renderer reads it
    the same way. */
 async function readStyles(forPrint) {
-  const names = ["fonts.css", "tokens.css", "book.css", "chart.css", "pages.css"];
+  const names = ["fonts.css", "tokens.css", "book.css", "chart.css", "pages.css", "pages-b.css"];
   if (forPrint) names.push("print.css");
   const parts = [];
   for (const n of names) {

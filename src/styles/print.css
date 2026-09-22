@@ -11,6 +11,8 @@
   margin: 0;
 }
 
+:root { --bleed-out: var(--bleed); }
+
 html, body { background: #ffffff; }
 
 body { margin: 0; }
@@ -31,11 +33,9 @@ body { margin: 0; }
 .cover__field { padding: calc(0.85in + var(--bleed)) calc(var(--margin) + var(--bleed)) 0.55in calc(var(--gutter-margin) + var(--bleed)); }
 .cover__plate { margin-left: calc(var(--gutter-margin) + var(--bleed)); }
 
-.numbers__plate {
-  margin-left: calc((var(--margin) + var(--bleed)) * -1);
-  margin-right: calc((var(--gutter-margin) + var(--bleed)) * -1);
-  margin-bottom: calc((var(--margin) + var(--bleed)) * -1);
-}
-
 /* Colour must not be "optimised" away by the renderer. */
 * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+/* The back cover sets its own padding, so it needs the bleed added back the
+   same way the recto/verso rules do. */
+.layout-back { padding: calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(1.1in + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)); }

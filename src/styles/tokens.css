@@ -36,4 +36,9 @@
   --bleed: 0.125in;
   --margin: 0.75in;
   --gutter-margin: 0.95in; /* inner edge, allows for the saddle stitch */
+
+  /* How far a full-bleed plate reaches past the live area. Zero on screen,
+     one bleed in print — so print.css flips every plate with one line
+     instead of re-stating each one. */
+  --bleed-out: 0in;
 }

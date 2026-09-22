@@ -83,7 +83,7 @@
 .numbers__plate {
   flex: 1;
   min-height: 3.4in;
-  margin: 0 calc(var(--margin) * -1) calc(var(--margin) * -1) calc(var(--margin) * -1);
+  margin: 0 calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1) calc((var(--margin) + var(--bleed-out)) * -1);
   overflow: hidden;
 }
 
