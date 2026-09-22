@@ -36,6 +36,12 @@ npm run build      # assemble the flipbook + print HTML
 npm run pdf        # render the press-ready PDF
 ```
 
+`npm run pdf` writes `bentleys-listing-presentation.pdf` to the **parent
+folder**, beside the rest of the brochure material — deliberately outside this
+repo. `npm run build` clears `dist/`, so a PDF there would be deleted by the
+next build, and the book is ~10MB, which would be re-committed in full every
+time it was rebuilt.
+
 Photography is re-cropped separately, since it reads from a source library
 outside the repo:
 

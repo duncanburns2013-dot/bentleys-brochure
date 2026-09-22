@@ -17,7 +17,12 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const INPUT = join(ROOT, "dist", "print.html");
-const OUTPUT = join(ROOT, "dist", "bentleys-listing-presentation.pdf");
+
+/* The PDF lands in the parent drive folder, beside the rest of the brochure
+   material — deliberately outside the repo. Two reasons: `npm run build`
+   clears dist/, so a PDF there would be deleted by the next build; and the
+   book is ~10MB, which would be re-committed in full on every rebuild. */
+const OUTPUT = join(ROOT, "..", "bentleys-listing-presentation.pdf");
 
 const CHROME_CANDIDATES = [
   "C:/Program Files/Google/Chrome/Application/chrome.exe",
