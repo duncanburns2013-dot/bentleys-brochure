@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+Thumbs.db
+__MACOSX/
+*.log
+
+# Working scratch — not deliverables
+tmp/
