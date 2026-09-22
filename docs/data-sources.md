@@ -40,15 +40,47 @@ RE/MAX conversion. The source file already combines them.
   pooled into an "other" line: Bean Group, J. Barrett & Company, Redfin,
   Advisors Living.
 
-### Open question
+### What the percentages measure
 
-The source file carries **no units label**, so whether these percentages are
-share of dollar volume or share of transaction sides is not recorded anywhere.
-The page currently says "market share" without committing to either. Worth
-pinning down with whoever built the source file before this goes to print.
+The source file carries no units label. The owner reports the published chart
+carried a disclaimer that **share includes off-market listings** — expired,
+cancelled and withdrawn, not only sales. That is now stated in the page's
+source line, because "share of this market" and "share of homes sold" are
+different claims and only the first is supported.
+
+An attempt to reverse-engineer the exact methodology against MLS PIN **did not
+succeed**, and the negative result is worth keeping so nobody repeats it.
+2024 and 2025 were pulled for the six Greater Newburyport towns including
+off-market listings, and 80 combinations of town set, side convention, metric,
+status universe and property type were scored against the published figures:
+
+| Definition | 2024 | 2025 | published |
+|---|---|---|---|
+| 6 towns / both sides / volume / closed | 15.62% | 14.73% | 15.6 / 15.79 |
+| 6 towns / both sides / volume / incl off-market | 16.98% | 15.80% | 15.6 / 15.79 |
+| 6 towns / list side / count / incl off-market | 15.34% | 12.04% | 15.6 / 15.79 |
+
+**No definition reproduces both years** — the best worst-year error is 1.06
+points. Several reproduce one year almost exactly, but that is what sweeping
+80 combinations against a single number will always produce, and it is not
+evidence.
+
+What the exercise does establish:
+
+- **The series is volume-weighted and counts both sides.** Every candidate that
+  lands anywhere near the published figures is. Listing-side counts come out at
+  10–12%, nowhere near 15–16%.
+- **Off-market inclusion matters materially** — it moves 2024 from 15.62% to
+  16.98%. So the disclaimer is load-bearing, not a footnote.
+- The unexplained residual is most likely the town list, a property-type or
+  rental filter, or additional Bentley's office and team IDs beyond `AN2888`
+  and `AN8279`. Team IDs are a known corrupter of raw MLS PIN side counts.
 
 Rows sum to roughly 53% in 2025 — the remainder is every other office in the
 market, not an error.
+
+Query scripts and cached pulls live in `D:\Bentley's Brochure\mls-tools`,
+deliberately outside this repo.
 
 ## Figures on page 8
 
