@@ -254,25 +254,64 @@ ${pages.join("\n\n")}
   var tip = document.createElement('div');
   tip.className = 'chart__tip';
   tip.setAttribute('role', 'status');
-  var tipValue = document.createElement('span');
-  tipValue.className = 'chart__tip-value';
   var tipLabel = document.createElement('span');
   tipLabel.className = 'chart__tip-label';
-  tip.appendChild(tipValue);
+  var tipBody = document.createElement('div');
+  tipBody.className = 'chart__tip-body';
   tip.appendChild(tipLabel);
+  tip.appendChild(tipBody);
   document.body.appendChild(tip);
 
+  // Names come from a data file — rows are built with textContent, never by
+  // concatenating HTML.
+  function tipRow(name, value, subject) {
+    var r = document.createElement('div');
+    r.className = 'chart__tip-row' + (subject ? ' is-subject' : '');
+    var n = document.createElement('span');
+    n.className = 'chart__tip-name';
+    n.textContent = name;
+    var v = document.createElement('span');
+    v.className = 'chart__tip-num';
+    v.textContent = value;
+    r.appendChild(n);
+    r.appendChild(v);
+    return r;
+  }
+
   function showTip(col) {
-    // Labels come from the data file — textContent, never innerHTML.
-    tipValue.textContent = col.getAttribute('data-value') || '';
     tipLabel.textContent = col.getAttribute('data-label') || '';
-    var bar = col.querySelector('.chart__bar');
-    var r = (bar || col).getBoundingClientRect();
+    tipBody.textContent = '';
+
+    // A line chart carries every series at this X; a column chart carries one
+    // value. One readout handles both.
+    var raw = col.getAttribute('data-rows');
+    if (raw) {
+      var rows = [];
+      try { rows = JSON.parse(raw); } catch (e) { rows = []; }
+      for (var i = 0; i < rows.length; i++) {
+        tipBody.appendChild(tipRow(rows[i].n, rows[i].v, rows[i].s));
+      }
+    } else {
+      tipBody.appendChild(tipRow('', col.getAttribute('data-value') || '', true));
+    }
+
+    var mark = col.querySelector('.chart__bar') || col.querySelector('.chart__crosshair') || col;
+    var r = mark.getBoundingClientRect();
     tip.style.left = (r.left + r.width / 2) + 'px';
     tip.style.top = r.top + 'px';
     tip.setAttribute('data-show', 'true');
+
+    var prev = document.querySelector('.chart__crosshair[data-on="true"]');
+    if (prev) prev.removeAttribute('data-on');
+    var cross = col.querySelector('.chart__crosshair');
+    if (cross) cross.setAttribute('data-on', 'true');
   }
-  function hideTip() { tip.setAttribute('data-show', 'false'); }
+
+  function hideTip() {
+    tip.setAttribute('data-show', 'false');
+    var on = document.querySelectorAll('.chart__crosshair[data-on="true"]');
+    for (var i = 0; i < on.length; i++) on[i].removeAttribute('data-on');
+  }
 
   document.addEventListener('pointermove', function (e) {
     var col = e.target.closest && e.target.closest('.chart__col');

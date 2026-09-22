@@ -45,37 +45,51 @@
   outline-offset: 2px;
 }
 
+/* The crosshair finds the year: readers aim at a date, never at a 2px line. */
+.chart__crosshair { transition: opacity 90ms ease; }
+.chart__crosshair[data-on="true"] { opacity: 0.28; }
+
 .chart__tip {
   position: absolute;
   z-index: 20;
-  min-width: 118px;
-  padding: 9px 12px;
+  min-width: 210px;
+  padding: 10px 12px 11px;
   border-radius: 7px;
   background: var(--navy);
   color: var(--cream);
   font-family: var(--font-sans);
   pointer-events: none;
   opacity: 0;
-  transform: translate(-50%, -112%);
+  transform: translate(-50%, -108%);
   transition: opacity 110ms ease;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34);
 }
 .chart__tip[data-show="true"] { opacity: 1; }
 
-/* Value leads, label follows — the reader already has the year and wants
-   the number. */
-.chart__tip-value {
-  display: block;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
 .chart__tip-label {
   display: block;
-  margin-top: 2px;
+  margin-bottom: 7px;
   font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cyan);
 }
+
+.chart__tip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(247, 245, 238, 0.62);
+}
+
+/* The subject is why the reader opened the tooltip — it gets full contrast
+   and weight; the context rows stay quiet. */
+.chart__tip-row.is-subject {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.chart__tip-num { font-variant-numeric: tabular-nums; }

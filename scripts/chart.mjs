@@ -213,12 +213,15 @@ export function emphasisLineChart(series, labels, opts = {}) {
   // pointer only has to find the year.
   const band = labels.length > 1 ? plotW / (labels.length - 1) : plotW;
   labels.forEach((l, i) => {
-    const rows = series
-      .map((s) => ({ name: s.name, v: s.values[i] }))
-      .filter((r) => r.v != null)
-      .sort((a, b) => b.v - a.v)
-      .map((r) => `${r.name} ${format(r.v)}`)
-      .join("\n");
+    // Every series at this X, so the pointer never has to land on a line to
+    // get a number. Ranked, because rank is what the reader is checking.
+    const rows = JSON.stringify(
+      series
+        .map((s) => ({ n: s.name, v: s.values[i], s: !!s.subject }))
+        .filter((r) => r.v != null)
+        .sort((a, b) => b.v - a.v)
+        .map((r) => ({ n: r.n, v: format(r.v), s: r.s })),
+    );
     parts.push(
       `<g class="chart__col" data-label="${esc(l)}" data-rows="${esc(rows)}">`,
       `<rect class="chart__hit" x="${(x(i) - band / 2).toFixed(1)}" y="${pad.top}" width="${band.toFixed(1)}" height="${plotH}" fill="transparent"/>`,
