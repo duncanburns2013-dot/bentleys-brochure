@@ -89,3 +89,24 @@
 
 /* A folio would land inside the bleeding photograph. */
 .layout-numbers .folio { display: none; }
+
+/* --- 09 market share ---------------------------------------------------- */
+
+.share__lede { max-width: 4.5in; margin-top: 0.22in; }
+
+.share__chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0.24in 0 0;
+}
+
+.share__source {
+  margin: 0.16in 0 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 6.5pt;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.45);
+  max-width: 6in;
+}

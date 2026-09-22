@@ -12,18 +12,58 @@ import { readdir, readFile, writeFile, mkdir, cp, rm } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { emphasisLineChart, dataTable } from "./chart.mjs";
+import { loadMarketShare, TOP_N } from "./market-share.mjs";
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "src");
 const DIST = join(ROOT, "dist");
 
 const TITLE = "Bentley's Real Estate — Listing Presentation";
 
-async function readPages() {
+/* Charts are rendered here, at build time, and substituted into the page.
+   Doing it in the browser would race the headless-Chrome print snapshot. */
+async function buildCharts() {
+  const pct = (n) => `${Number(n).toFixed(n % 1 === 0 ? 0 : 2)}%`;
+
+  const { years, series } = await loadMarketShare();
+  const subject = series.find((s) => s.subject);
+
+  const svg = emphasisLineChart(series, years, {
+    format: pct,
+    axisFormat: (n) => `${n}%`,
+    // Taller than wide-screen proportions: the plate is a book page, and a
+    // 2:1 chart floats in a pool of empty cream. Extra height also opens up
+    // the crossings in the middle of the field.
+    height: 720,
+  });
+
+  const table = dataTable(
+    years.map((y, i) => ({ label: y, value: subject.values[i] ?? 0 })),
+    {
+      format: pct,
+      caption: `Bentley's market share, Greater Newburyport, and the ${TOP_N - 1} largest competing brokerages`,
+      valueHead: "Bentley's share",
+    },
+  );
+
+  return { "market-share": svg + "\n" + table };
+}
+
+async function readPages(charts) {
   const dir = join(SRC, "pages");
   const files = (await readdir(dir)).filter((f) => f.endsWith(".html")).sort();
   if (!files.length) throw new Error("no pages found in src/pages");
+
   const pages = [];
-  for (const f of files) pages.push((await readFile(join(dir, f), "utf8")).trim());
+  for (const f of files) {
+    let html = (await readFile(join(dir, f), "utf8")).trim();
+    html = html.replace(/<!--CHART:([\w-]+)-->/g, (_, name) => {
+      if (!(name in charts)) throw new Error(`${f}: unknown chart "${name}"`);
+      return charts[name];
+    });
+    pages.push(html);
+  }
   return { files, pages };
 }
 
@@ -253,7 +293,7 @@ ${pages.join("\n\n")}
 }
 
 async function main() {
-  const { files, pages } = await readPages();
+  const { files, pages } = await readPages(await buildCharts());
 
   await rm(DIST, { recursive: true, force: true });
   await mkdir(DIST, { recursive: true });

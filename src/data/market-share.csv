@@ -1,0 +1,38 @@
+# Greater Newburyport brokerage market share, percent, by year.
+#
+# SOURCE FILE: D:\Market Share Race Chart\greater-newburyport-market-share-2016-2026ytd.csv
+# Underlying data per MLS PIN. Also published by the owner as a Flourish
+# visualisation, "Greater Newburyport Market Share 2016-2026 YTD":
+#   https://app.flourish.studio/visualisation/29950235/edit
+#
+# Bentley's holds two MLS office IDs that must both be counted: AN2888 (the
+# legacy team) and AN8279 (the RE/MAX era). The source file already combines
+# them.
+#
+# 2026 IS DELIBERATELY EXCLUDED and the column is dropped below: the year is
+# not over, and the owner reports the figure may be stale.
+#
+# OPEN QUESTION: the source file carries no units label, so whether these
+# percentages are share of dollar volume or share of transaction sides is not
+# recorded. Rows sum to roughly 53% in 2025, so the remainder is every other
+# office, not an error.
+#
+# merge_into folds an absorbed brokerage's history into its acquirer so the
+# acquirer's line runs continuously across the deal.
+#
+brokerage,merge_into,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025
+"Bentley's",,2.71,8.77,11.42,14.86,13.79,15.2,16.53,11.8,15.6,15.79
+"RE/MAX On The River",,19.61,16.17,12.15,12.9,9.99,5.46,2.91,1.52,0.0,0.0
+"William Raveis",,10.46,8.8,8.77,9.53,8.06,5.95,4.03,2.66,4.31,3.82
+"Keller Williams",,15.37,13.8,13.0,11.65,9.52,5.9,8.79,9.58,10.56,7.75
+"Stone Ridge Properties",,10.19,10.04,10.48,8.02,7.72,7.94,8.14,8.25,0.0,0.0
+"Lamacchia Realty",,0.0,0.0,0.0,0.0,0.0,0.96,0.95,0.0,7.26,5.42
+"Realty One Group Nest",,0.0,0.0,0.0,0.0,0.0,2.93,4.89,7.04,7.55,10.18
+"Gibson Sotheby's",,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.85,3.89,3.92
+"Fruh Realty",Gibson Sotheby's,0.0,0.0,0.85,3.55,4.07,4.05,4.45,0.0,0.0,0.0
+"Coldwell Banker",,6.19,4.75,5.43,3.14,2.58,3.42,3.76,2.25,2.78,2.82
+"Compass",,0.0,0.0,0.27,0.63,1.35,1.63,1.51,1.45,3.78,3.47
+"Bean Group",,1.81,1.79,1.08,1.07,1.21,1.22,0.84,0.46,0.0,0.0
+"J. Barrett & Company",,0.5,1.37,1.65,0.28,1.13,0.78,0.44,0.69,0.42,0.0
+"Redfin",,0.49,0.8,0.98,1.01,1.18,0.84,0.78,0.46,0.62,0.0
+"Advisors Living",,0.0,0.0,0.33,0.54,0.39,1.04,2.22,2.69,0.77,0.0
