@@ -30,20 +30,20 @@ PLATES = [
     # 01 cover — binding edge to the bleed on three sides
     ("cover-entry.jpg", LISTINGS / "2213.jpg", 7.675, 7.30, 0.40),
     # 02 letter — the two owners, matched portraits
-    ("owner-robert.jpg", PEOPLE / "Bentley_015.jpg", 2.45, 3.25, 0.34),
-    ("owner-alissa.jpg", PEOPLE / "Christie_051.jpg", 2.45, 3.25, 0.30),
+    ("owner-robert.jpg", PEOPLE / "Bentley_015.jpg", 3.30, 4.36, 0.34),
+    ("owner-alissa.jpg", PEOPLE / "Christie_051.jpg", 3.30, 4.36, 0.30),
     # 03 the attention your property deserves
     ("strategy-hero.jpg", LISTINGS / "5.jpg", 8.75, 4.70, 0.46),
     # 04 your community is our community
     ("community-aerial.jpg", MISC / "Drone Newburyport.jpg", 8.75, 4.30, 0.50),
     # 05 the way we work
-    ("process-detail.jpg", LISTINGS / "7H1A7796-HDR.jpg", 3.35, 4.60, 0.40),
+    ("process-detail.jpg", LISTINGS / "7H1A7796-HDR.jpg", 6.40, 8.80, 0.40),
     # 06 the right price
     ("pricing-home.jpg", LISTINGS / "7406.jpg", 8.75, 3.85, 0.46),
     # 07 your brokerage
-    ("brokerage-town.jpg", LISTINGS / "DJI_0683.jpg", 3.60, 4.60, 0.45),
+    ("brokerage-town.jpg", LISTINGS / "DJI_0683.jpg", 6.90, 8.80, 0.45),
     # 08 our numbers work for you — full-bleed foot band
-    ("numbers-street.jpg", LISTINGS / "DJI_0237.jpg", 8.75, 3.05, 0.45),
+    ("numbers-street.jpg", LISTINGS / "DJI_0237.jpg", 11.40, 4.00, 0.45),
     # 10 marketing power
     ("marketing-aerial.jpg", LISTINGS / "1.jpg", 8.75, 3.55, 0.45),
     # 11 the RE/MAX Collection
@@ -54,7 +54,10 @@ PLATES = [
 
 # Brand artwork is copied at native size — it is a diagram, not a photograph,
 # and re-cropping it would cut the country list off.
-COPIES = [("global-map.png", BRAND / "Global-Map-1.png")]
+# The AVIF is the Q2 2026 landscape edition: 2560px rather than 1584, and
+# it carries RE/MAX's own current figures rather than the older portrait
+# version's.
+COPIES = [("global-map.png", BRAND / "Global-Map5-1.avif")]
 
 # 18 the team. Deliberately unnamed: putting the wrong name under a colleague's
 # face in a client brochure is a worse failure than showing none. Robert and

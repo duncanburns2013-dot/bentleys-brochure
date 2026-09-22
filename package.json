@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Bentley's Real Estate listing presentation — press booklet + web flipbook from one HTML source",
+  "description": "Bentley's Real Estate listing presentation \u2014 press booklet + web flipbook from one HTML source",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "pdf": "node scripts/build-pdf.mjs"
+    "pdf": "node scripts/build-pdf.mjs && python scripts/finish-pdf.py"
   },
   "dependencies": {
     "@fontsource/montserrat": "^5.0.0",

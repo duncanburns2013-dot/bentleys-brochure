@@ -57,6 +57,45 @@ python scripts/prepare-photos.py
         title="Bentley's Listing Presentation"></iframe>
 ```
 
+## Print specification
+
+Hand this to the shop with the file.
+
+| | |
+|---|---|
+| **Trim** | 8.5 × 11 in portrait |
+| **Pages** | 20, single sequential pages in reading order — **not imposed**; the shop imposes |
+| **Binding** | Saddle-stitch (20pp is a multiple of 4) |
+| **Bleed** | 0.125 in on all four sides. MediaBox 8.75 × 11.25 in, **TrimBox 8.5 × 11 in** |
+| **Safe zone** | 0.75 in outer margin, 0.95 in at the binding edge |
+| **Images** | All ≥ 300 dpi at placed size (verified, not assumed) |
+| **Fonts** | Fully embedded as subsets |
+| **Colour** | **RGB — see below** |
+
+### Colour: the one thing to tell the printer
+
+The file is **RGB, not CMYK, and is not PDF/X-1a.** It is rendered by headless
+Chrome, which only emits RGB.
+
+This is usually fine — a commercial shop's own colour-managed conversion is
+generally better than a naive one, and most accept RGB. But they must be told,
+because Bentley's navy `#1e335e` is exactly the kind of deep blue that shifts
+on an uncontrolled conversion.
+
+Two ways to close it:
+
+1. **Let the printer convert**, and ask for a wet proof or hard proof of the
+   cover and the market-share page before the run.
+2. **Convert here first**, which needs Ghostscript (not installed):
+   ```bash
+   gs -dPDFX -dBATCH -dNOPAUSE -sDEVICE=pdfwrite \
+      -sColorConversionStrategy=CMYK -dProcessColorModel=/DeviceCMYK \
+      -sOutputFile=book-cmyk.pdf bentleys-listing-presentation.pdf
+   ```
+
+Either way, **pull a printed proof before committing to a full run.** Screen
+navy and press navy are never the same conversation.
+
 ## Brand
 
 Navy `#1e335e`, cyan `#c9ebfc` — Bentley's approved pair. These are
