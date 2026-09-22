@@ -1,10 +1,13 @@
 /* ---------------------------------------------------------------------------
    Per-page layout. One block per page, in book order.
+
+   Layout classes go on .page__inner, never on .page — see the note in
+   book.css about the flipbook library overwriting .page's inline styles.
 --------------------------------------------------------------------------- */
 
 /* --- 01 cover ----------------------------------------------------------- */
 
-.page--cover { display: grid; grid-template-rows: 1fr 5.1in; }
+.layout-cover { display: grid; grid-template-rows: 1fr 5.1in; }
 
 .cover__field {
   position: relative;
@@ -40,7 +43,7 @@
   color: var(--cyan);
 }
 
-/* The plate sits inset from the outer edge, bleeding off the foot — the
+/* The plate sits inset from the binding edge and bleeds off the foot — the
    reference book's cover move. */
 .cover__plate {
   margin: 0 0 0 var(--gutter-margin);
@@ -48,8 +51,6 @@
 }
 
 /* --- 08 our numbers work for you ---------------------------------------- */
-
-.page--numbers { display: flex; flex-direction: column; }
 
 .numbers__grid {
   display: grid;
@@ -84,4 +85,4 @@
 }
 
 /* A folio would land inside the bleeding photograph. */
-.page--numbers .folio { display: none; }
+.layout-numbers .folio { display: none; }

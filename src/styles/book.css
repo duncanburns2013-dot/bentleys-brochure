@@ -17,6 +17,12 @@ html, body {
 
 /* --- the page box ------------------------------------------------------- */
 
+/* IMPORTANT: .page is the trim-sized box and nothing else. The flipbook
+   library takes ownership of this element at runtime and writes position,
+   display, width, height and z-index onto it as inline styles — which beat
+   any stylesheet rule. Layout therefore lives on .page__inner, which the
+   library never touches. Putting a `display` on .page will be silently
+   overridden in the web build while still working in print. */
 .page {
   position: relative;
   width: var(--trim-w);
@@ -28,10 +34,17 @@ html, body {
   break-after: page;
 }
 
+.page__inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Recto (odd) pages bind on the left, verso (even) on the right. */
-.page--recto { padding: var(--margin) var(--margin) var(--margin) var(--gutter-margin); }
-.page--verso { padding: var(--margin) var(--gutter-margin) var(--margin) var(--margin); }
-.page--bleed { padding: 0; }
+.page--recto > .page__inner { padding: var(--margin) var(--margin) var(--margin) var(--gutter-margin); }
+.page--verso > .page__inner { padding: var(--margin) var(--gutter-margin) var(--margin) var(--margin); }
+.page--bleed > .page__inner { padding: 0; }
 
 .page--navy { background: var(--navy); color: var(--cream); }
 

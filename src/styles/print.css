@@ -25,8 +25,8 @@ body { margin: 0; }
 
 /* Push the live area back in by one bleed so the layout keeps its true
    margins relative to the trim line, not the bleed edge. */
-.page--recto { padding: calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)); }
-.page--verso { padding: calc(var(--margin) + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)); }
+.page--recto > .page__inner { padding: calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)); }
+.page--verso > .page__inner { padding: calc(var(--margin) + var(--bleed)) calc(var(--gutter-margin) + var(--bleed)) calc(var(--margin) + var(--bleed)) calc(var(--margin) + var(--bleed)); }
 
 .cover__field { padding: calc(0.85in + var(--bleed)) calc(var(--margin) + var(--bleed)) 0.55in calc(var(--gutter-margin) + var(--bleed)); }
 .cover__plate { margin-left: calc(var(--gutter-margin) + var(--bleed)); }
